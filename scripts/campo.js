@@ -5,6 +5,9 @@ let angle = 0;
 const maxAngle = (Math.PI / 180) * 20;
 const minAngle = -(Math.PI / 180) * 20;
 
+console.log("max" , maxAngle);
+console.log("min" , minAngle);  
+
 const anguloCentral = 0.01  ;
 
 const cx = canvas.width / 2;
