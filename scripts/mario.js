@@ -10,6 +10,8 @@ let limiteDireta = 517;
 let limiteEsquerda = 117;
 let cairaparafora = 0;
 let pontoMedio = 317;
+let direcaoopostaboss = 0;
+let puloboss = 0;
 
 export function iniciarMario() {
   mario = {
@@ -17,6 +19,7 @@ export function iniciarMario() {
     height: alturaMario,
     x: canvas.width / 2,
     y: canvas.height / 2 - 90,
+    pularboss: false,
     pulo: false,
     caiu: false,
   };
@@ -42,21 +45,20 @@ export function iniciarMario() {
 
 
 export function desenharMario(angulo) {
-    // Atualiza a posição Y REAL do objeto mario primeiro
-    moveMarioy(angulo); // Isso deve calcular a posição base
-    mario.y += 365 - pulo - cair + cairaparafora; // Aplica os ajustes de movimento
     
-    // Agora desenha com as coordenadas reais
+    moveMarioy(angulo); 
+    mario.y += 365 - pulo - cair + cairaparafora  - puloboss; 
+    
+  
     ctx.fillStyle = "red";
     ctx.fillRect(
         mario.x,
-        mario.y,  // Usa mario.y diretamente (já com todos os ajustes)
+        mario.y,  
         mario.width,
         mario.height
     );
     
-    // IMPORTANTE: Remove os ajustes após o desenho para não acumular
-    // mario.y -= 365 - pulo - cair + cairaparafora;
+
 }
 
 export function moveMario(cordenada, direcao) {
@@ -86,11 +88,11 @@ export function fazMarioPular() {
     return;
   }
   if (mario.pular == true) {
-    pulo += 2;
+    pulo += 2.5;
     esperandoTroca = true;
   }
   if (mario.pular == false && pulo > 0) {
-    pulo -= 2;
+    pulo -= 2.5;
    
   }
   if (mario.pular == true && esperandoTroca == true) {
@@ -101,47 +103,9 @@ export function fazMarioPular() {
   }
 }
 
-
 export function pegarPosicaoMario() {
   return mario;
 }
-
-
-
-
-
-
-// let pulando = false;
-// let alturaMaxima = 100;
-// let velocidadePulo = 3;
-
-// export function fazMarioPular() {
-//   if (mario.caiu || pulando || pulo > 0) {
-//     return;
-//   }
-
-//   pulando = true;
-//   mario.pular = true;
-
-
-//   let subir = setInterval(() => {
-//     if (pulo >= alturaMaxima) {
-//       clearInterval(subir);
-//       let descer = setInterval(() => {
-//         if (pulo <= 0) {
-//           clearInterval(descer);
-//           pulo = 0;
-//           mario.pular = false;
-//           pulando = false;
-//         } else {
-//           pulo -= velocidadePulo;
-//         }
-//       }, 16); 
-//     } else {
-//       pulo += velocidadePulo;
-//     }
-//   }, 16);
-// }
 
 function moveMarioy(angulo) {
   let alturaPlataforma = 100;
@@ -152,28 +116,19 @@ function moveMarioy(angulo) {
   mario.y = cy + dy - mario.height;
 }
 
-
-
 export function fazMarioCair(angulo) {
-
+  console.log(puloboss);
 
 
   if (pulo) {
     return;
   }
-
-  // console.log("mario.x", mario.x);
-  //   console.log("limite0", limiteDireta);
-  // // console.log("esq", limiteEsquerda);
-  // console.log("ang", angulo);
   if (angulo < -0.13) {
     limiteDireta = 533;
-
   }
   else if (angulo > 0.13) {
     limiteDireta = 551;
      limiteEsquerda = 92;
-   
   }
   else{
     limiteDireta = 551;
@@ -188,4 +143,12 @@ export function fazMarioCair(angulo) {
     cairaparafora += 4;
     mario.caiu = true;
   }
+
 }
+
+
+
+
+
+
+

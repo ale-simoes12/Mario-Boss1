@@ -1,7 +1,7 @@
 import { desenharQuadrado ,pegarAnguloCampo } from './campo2.js';
-import { desenharMario, iniciarMario , moveMario ,fazMarioPular ,fazMarioCair , pegarPosicaoMario} from './mario.js';
-import { desenharFundo ,limparMapa } from './mapa.js';
-import { iniciarBoss , desenharBoss ,moverBoss , desenharAtaqueBoss , ataqueBoss} from './boss.js';
+import { desenharMario, iniciarMario , moveMario ,fazMarioPular ,fazMarioCair , pegarPosicaoMario } from './mario.js';
+import { desenharFundo ,limparMapa,desenhaLava } from './mapa.js';
+import { iniciarBoss , desenharBoss ,moverBoss , desenharAtaqueBoss , ataqueBoss,fazBossCair , desenhaVidaMario ,pegarBoss } from './boss.js';
 
 
 function loop (){
@@ -9,12 +9,17 @@ function loop (){
     limparMapa();
     desenharFundo();
     fazMarioPular();
+    // MarioPularBoss(-1);
     desenharQuadrado();
     moverBoss();
-    desenharAtaqueBoss(pegarAnguloCampo() , pegarPosicaoMario());
+    desenharAtaqueBoss(pegarAnguloCampo(), pegarPosicaoMario() );
     fazMarioCair(pegarAnguloCampo());
-    desenharBoss(pegarAnguloCampo());
+    fazBossCair(pegarAnguloCampo());
+    desenharBoss(pegarAnguloCampo(), pegarPosicaoMario());
     desenharMario(pegarAnguloCampo());
+    desenhaVidaMario();
+    // verificaMarioPularBoss(pegarBoss());
+    desenhaLava();
     requestAnimationFrame(loop);
     
 }
