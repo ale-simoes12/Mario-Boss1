@@ -13,9 +13,41 @@ let colidiu = false;
 let movendoBoss = false;
 let cairaparafora = 0;
 let vidas = 3;
-let tempoInicioDoJogo = Date.now(); 
+let tempoInicioDoJogo;
+// let tempoInicioDoJogo = Date.now(); 
 let delayInicialAtaque = 3000; 
 let tempoInicioAtaque = 0;
+let ultimoDano = 0;
+let tempoUltimoAcertoCabeca = 0;
+let cairAtaque = 0;
+
+
+
+
+export function  resetaBoss(){
+    delayInicialAtaque = 3000; 
+    tempoInicioAtaque = 0;
+    ultimoDano = 0;
+    tempoUltimoAcertoCabeca = 0;
+    boss;
+    limiteDireta = 520;
+    limiteEsquerda =  124;
+    pontoMedio = 317;
+    movimento = 0;
+    larguraBoss =  20;
+    alturaBoss = 40;
+    direcaoAtaque = 0;
+    ataque;
+    colidiu = false;
+    movendoBoss = false;
+    cairaparafora = 0;
+    vidas = 3;
+    cairAtaque = 0;
+}
+
+export function  gerarTemoInicialAtaque(){
+    tempoInicioDoJogo = Date.now(); 
+}
 
 export function iniciarBoss() {
     boss = {
@@ -23,12 +55,12 @@ export function iniciarBoss() {
         height: alturaBoss,
         x: canvas.width/2 -30 +100,
         y: canvas.height/2 -90 ,
+        empurrado:false,
         caiu:false,
     };
 }
 
 export function ataqueBoss() {
-    
     ataque = {
         width: 20,
         height: 20,
@@ -39,7 +71,6 @@ export function ataqueBoss() {
 }
 
 function podeMoverBoss() {
-    console.log("podeMover", movendoBoss);
     return movendoBoss;
 }
 
@@ -65,8 +96,24 @@ export function desenharBoss(angulo , mario) {
     // moveBossy(angulo);
     moverYangulo(boss,angulo, deslocamentoY) ;  
     enpurraBoss(mario);
-    boss.y+= cairaparafora;
+    boss.y += cairaparafora;
+    let direcaoImagem =  -1;
+    if(boss.x > mario.x){
+        direcaoImagem = -1;
+    }
+    if(boss.x < mario.x){
+        direcaoImagem = 1;
+
+    }
+
+   const imgKoopa = new Image();
+   let urlImage =  'Images/igkoopa' + direcaoImagem + '.png'; 
+   if(boss.empurrado == true){
+    urlImage =  'Images/cascoKoopa.png';      
+   } 
+    imgKoopa.src =  urlImage;
     ctx.fillRect(boss.x + movimento , boss.y , boss.width , boss.height);
+    ctx.drawImage(imgKoopa,  boss.x + movimento , boss.y , boss.width , boss.height);
 }
 
 
@@ -81,6 +128,7 @@ export function desenharAtaqueBoss(angulo , mario ) {
         tempoInicioAtaque = agora;
         ataque.x = boss.x;
         ataque.y = boss.y; 
+        cairAtaque = 0;
         gerarDirecaoAtaque(mario);
     }
     if (agora - tempoInicioAtaque >= 4000) {
@@ -94,12 +142,17 @@ export function desenharAtaqueBoss(angulo , mario ) {
         return;
     }
     ataque.x += direcaoAtaque; 
+    // ataque.y += cairAtaque;
     // moveAtaqueY(angulo); 
 
     moverYangulo(ataque,angulo, deslocamentoY)      
     vericaColisaoAtaque(mario);
     ctx.fillStyle = "white";
-    ctx.fillRect(ataque.x, ataque.y, ataque.width, ataque.height);
+    const imgAtaque = new Image();
+    let urlImage =  'Images/imgAtaque.png' 
+    imgAtaque.src =  urlImage;
+    //ctx.fillRect(ataque.x, ataque.y, ataque.width, ataque.height);
+    ctx.drawImage(imgAtaque , ataque.x, ataque.y +=  cairAtaque, ataque.width, ataque.height);
 }
 
 
@@ -127,8 +180,12 @@ function empurraBossSuavemente(distancia) {
     function animarEmpurrao() {
         if (passoAtual < passos) {
             boss.x += deslocamentoPorPasso;
+            boss.empurrado = true;
             passoAtual++;
             requestAnimationFrame(animarEmpurrao);
+        }
+        else{
+            boss.empurrado = false;
         }
     }
 
@@ -138,7 +195,7 @@ function empurraBossSuavemente(distancia) {
 
 
 
-let tempoUltimoAcertoCabeca = 0;
+// let tempoUltimoAcertoCabeca = 0;
 function enpurraBoss(mario) {
     const colisaoHorizontal = 
         boss.x + boss.width > mario.x && 
@@ -164,7 +221,7 @@ function enpurraBoss(mario) {
             const direcao = mario.x < boss.x ? 1 : -1;
             empurraBossSuavemente(15 * direcao);
             tempoUltimoAcertoCabeca = agora; // salva o tempo do acerto
-        } else if (tempoDesdeUltimoAcerto > 2000) {
+        } else if (tempoDesdeUltimoAcerto > 200) {
             perderVida();
         }
     }
@@ -257,14 +314,31 @@ export function fazBossCair(angulo) {
 
   gerarLimites(angulo);   
   if (boss.x > limiteDireta) {
-    cairaparafora += 3;
+    cairaparafora += 6;
     boss.caiu = true;
   }
   if (boss.x < limiteEsquerda ) {
-    cairaparafora += 4;
+    cairaparafora += 6;
     boss.caiu = true;
   }
 }
+
+
+
+
+
+export function fazAtaqueCair(angulo){
+  gerarLimites(angulo);   
+  if (ataque.x > limiteDireta) {
+    cairAtaque += 4;
+    
+  }
+  if (ataque.x < limiteEsquerda ) {
+    cairAtaque += 4;
+  }
+
+}
+
 
 
 function gerarLimites(angulo) {
@@ -306,7 +380,8 @@ export function desenhaVidaMario() {
 export function pegarVidas(){
   return vidas;
 }
-let ultimoDano = 0;
+
+
 const tempoInvulnerabilidade = 1000;
 export function perderVida() {
   const agora = Date.now();
@@ -318,5 +393,49 @@ export function perderVida() {
   vidas -= 1;
   ultimoDano = agora;
 }
+
+
+export function verificaBossMatouMario(){
+    if(vidas <= 0){
+        document.getElementById('popupDerrota').style.display = 'flex';
+        return true;
+    }
+    return false;
+
+}
+
+
+export function verificaBossLava(tempo, nome){
+  let yLava =  canvas.width-50;
+  if (boss.y + boss.height/2  >  yLava ){
+    document.getElementById('popupVitoria').style.display = 'flex';
+    console.log("fem com" + vidas  +  "em "+ tempo + "nome: "  + nome);
+    inserirJogador(nome,vidas,tempo);
+    return true;
+  }
+  return false;
+}
+
+
+function inserirJogador(nome, vidas, tempo) {
+    fetch('http://192.168.208.46:5050/dados', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ nome, vidas, tempo })
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log('Resposta do servidor:', data);
+    })
+    .catch(error => {
+      console.error('Erro ao enviar dados:', error);
+    });
+  }
+  
+
+
+
 
 

@@ -9,9 +9,25 @@ let cair = 0;
 let limiteDireta = 517;
 let limiteEsquerda = 117;
 let cairaparafora = 0;
-let pontoMedio = 317;
-let direcaoopostaboss = 0;
 let puloboss = 0;
+let direcaoGlobal = 1;
+
+
+
+
+
+export function resetaMario(){
+  mario;
+  esperandoTroca = false;
+  pulo = 0;
+  cair = 0;
+  limiteDireta = 517;
+  limiteEsquerda = 117;
+  cairaparafora = 0;
+  puloboss = 0;
+  direcaoGlobal = 1;
+}
+
 
 export function iniciarMario() {
   mario = {
@@ -45,23 +61,26 @@ export function iniciarMario() {
 
 
 export function desenharMario(angulo) {
-    
+  const imgMario = new Image();
+  let urlImage =  'Images/Mario' + direcaoGlobal + '.png' 
+  // imgMario.src = 'Images/marioMarioDireita.png';
+  imgMario.src =  urlImage;
+  
     moveMarioy(angulo); 
     mario.y += 365 - pulo - cair + cairaparafora  - puloboss; 
     
   
     ctx.fillStyle = "red";
-    ctx.fillRect(
-        mario.x,
-        mario.y,  
-        mario.width,
-        mario.height
-    );
-    
+    ctx.fillRect(mario.x,mario.y,mario.width,mario.height);
+
+  
+    ctx.drawImage(imgMario,mario.x,mario.y,mario.width,mario.height);
+     
 
 }
 
 export function moveMario(cordenada, direcao) {
+  direcaoGlobal  = direcao;
   if (cordenada == "x") {
     if(pulo > 0){
     let novaX = mario.x + 4 * direcao;
@@ -88,19 +107,23 @@ export function fazMarioPular() {
     return;
   }
   if (mario.pular == true) {
-    pulo += 2.5;
+    if(pulo == 120){
+      mario.pular = false 
+    } 
+    pulo += 3;
     esperandoTroca = true;
   }
   if (mario.pular == false && pulo > 0) {
-    pulo -= 2.5;
+    if(pulo == 0)return;
+    pulo -= 3;
    
   }
-  if (mario.pular == true && esperandoTroca == true) {
-    setTimeout(() => {
-      mario.pular = false;
-      esperandoTroca = false;
-    }, 1000);
-  }
+  // if (mario.pular == true && esperandoTroca == true) {
+  //   setTimeout(() => {
+  //     mario.pular = false;
+  //     esperandoTroca = false;
+  //   }, 1000);
+  // }
 }
 
 export function pegarPosicaoMario() {
@@ -117,7 +140,7 @@ function moveMarioy(angulo) {
 }
 
 export function fazMarioCair(angulo) {
-  console.log(puloboss);
+  // console.log(puloboss);
 
 
   if (pulo) {
@@ -147,6 +170,16 @@ export function fazMarioCair(angulo) {
 }
 
 
+
+
+export function verificaMarioLava(){
+  let yLava =  canvas.width-50;
+  if (mario.y + mario.height/2  >  yLava ){
+   document.getElementById('popupDerrota').style.display = 'flex';
+   return true;
+  }
+  return false;
+}
 
 
 

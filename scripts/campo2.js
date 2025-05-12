@@ -22,12 +22,24 @@ const aumetarImagem = 80;
 const  deslocarXimagem = 35;
 
 
+
+
+
+export function  resetaCampo(){
+   angle = 0;
+   esperandoTroca = false;
+   estado = 0;
+   estado_proximo = 1;  
+}
+
+
+
 export function desenharQuadrado() {
   ctx.save();
   ctx.translate(cx + rectCenterX, cy + rectCenterY);
   ctx.rotate(angle);
   ctx.fillStyle = 'blue';
-  ctx.fillRect(-rectWidth / 2,-rectHeight / 2, rectWidth,rectHeight);
+  // ctx.fillRect(-rectWidth / 2,-rectHeight / 2, rectWidth,rectHeight);
   if (imgCampo.complete) {
     ctx.drawImage(imgCampo, -rectWidth / 2  - deslocarXimagem,-rectHeight / 2 ,  rectWidth + aumetarImagem ,rectHeight);
     ctx.restore(); 

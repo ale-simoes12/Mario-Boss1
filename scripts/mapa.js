@@ -32,9 +32,8 @@ export function desenharFundo(){
 export function desenhaLava() {
   let lavaAltura = canvas.height / 4;
   let yLava = canvas.height -50;
-
-
   let gradienteLava = ctx.createLinearGradient(0, yLava, 0, canvas.height);
+  
   gradienteLava.addColorStop(0, '#ff9900');  
   gradienteLava.addColorStop(0.5, '#ff3300'); // Vermelho intenso
   gradienteLava.addColorStop(1, '#660000');  // Vermelho escuro
@@ -53,9 +52,21 @@ export function desenhaLava() {
 }
 
 
+export function desenharTempoMapa(tempo) {
+  let xTempo = 420;
+  let yTempo = 50;
+
+  
+  ctx.font = '25px "PressStart2P"';      // Define o estilo da fonte
+  ctx.fillStyle = 'white';      // Define a cor do texto
+  ctx.fillText(tempo, xTempo, yTempo);  // Desenha o texto na posição desejada
+}
 
 
 
 export function limparMapa(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
+
+
+

@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "81:81"
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html
+      - ./estilo.css:/usr/share/nginx/html/estilo.css
+      - ./Images:/usr/share/nginx/html/Images
+      - ./scripts:/usr/share/nginx/html/scripts
+      - ./Fontes:/usr/share/nginx/html/Fontes
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5050:5050"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=alessandro
+      - DB_PASSWORD=123
+      - DB_NAME=alessandro
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: alessandro
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: alessandro
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

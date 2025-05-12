@@ -62,7 +62,7 @@ if (angle.toFixed(1) == anguloCentral.toFixed(1)  &&  !esperandoTroca  && estado
 
   if (angle.toFixed(2) == maxAngle.toFixed(2)  &&  !esperandoTroca) {
     esperandoTroca = true;
-    console.log("caiu");
+   
     setTimeout(() => {
         estado_proximo = 2;
         estado = estado_proximo;

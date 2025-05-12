@@ -1,12 +1,69 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
+     <div class="tela-inicio" id="telaInicio">
+        <h1 class="titulo-jogo">Mario</h1>
+
+        <div id="lista-jogadores" ></div>
+        <div class="botoes-inicio">
+            <input type="text" id="nomeJogador" class="input-nome" placeholder="Digite seu nome antes de começar" maxlength="15">
+            <button class="botao-inicio botao-jogar" onclick="iniciarJogo()">JOGAR</button>
+            <button class="botao-inicio botao-regras" onclick="mostrarRegras()">REGRAS</button>
+            <button class="botao-inicio botao-vencedores" onclick="mostrarVencedores()">VENCEDORES</button>
+        </div>
+    </div>
+
+
+    <div class="popup-frogger" id="popupDerrota">
+        <div class="conteudo-frogger">
+            <h2 class="titulo-popup">VOCÊ PERDEU!</h2>
+            <p class="mensagem-popup">O mario caiu na lava ou perdeu as vidas</p>
+            <button class="botao-popup" onclick="reiniciarJogo()">Voltar ao Menu</button>
+        </div>
+    </div>
+
+    <div class="popup-frogger" id="popupVitoria">
+        <div class="conteudo-frogger">
+            <h2 class="titulo-popup">PARABÉNS!</h2>
+            <p class="mensagem-popup">Você empurrou o Boss na lava!!!</p>
+            <button class="botao-popup" onclick="reiniciarJogo()">Voltar ao Menu</button>
+        </div>
+    </div>
+
+
+    <div class="popup-regras" id="popupRegras">
+        <div class="conteudo-popup">
+            <span class="botao-fechar" onclick="fecharRegras()">&times;</span>
+            <h2>Regras do Jogo</h2>
+            <ol>
+                <li>O objetivo é guiar o sapo até o outro lado do rio, evitando os obstáculos.</li>
+                <li>Use as setas do teclado (↑, ↓, ←, →) para mover o sapo.</li>
+                <li>Evite os carros que passam pela estrada - eles podem esmagar o sapo!</li>
+                <li>No rio, pule em cima dos troncos para atravessar com segurança.</li>
+                <li>Cuidado com os troncos que podem levar o sapo para fora da tela!</li>
+                <li>Complete todas as áreas de chegada para vencer o jogo.</li>
+            </ol>
+        </div>
+    </div>   
+
+
+
+<div class="popup-vencedores" id="popupVencedores">
+    <div class="conteudo-popup"   id="adicionaDiv">
+        <span class="botao-fechar" onclick="fecharVencedores()">&times;</span>
+        <h2>Vencedores</h2>
+    
+    </div>
+</div> 
+
+
+
 
     <div class="conteudoCanvas">
         <canvas id="canvas" width="635" height="630"></canvas>
