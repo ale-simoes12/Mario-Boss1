@@ -21,17 +21,12 @@ const rectCenterY = rectY + rectHeight / 2;
 const aumetarImagem = 80;
 const  deslocarXimagem = 35;
 
-
-
-
-
 export function  resetaCampo(){
    angle = 0;
    esperandoTroca = false;
    estado = 0;
    estado_proximo = 1;  
 }
-
 
 
 export function desenharQuadrado() {
@@ -44,18 +39,58 @@ export function desenharQuadrado() {
     ctx.drawImage(imgCampo, -rectWidth / 2  - deslocarXimagem,-rectHeight / 2 ,  rectWidth + aumetarImagem ,rectHeight);
     ctx.restore(); 
   } 
-
   else {
     imgCampo.onload = () => {
         ctx.drawImage(imgCampo, -rectWidth / 2  - deslocarXimagem,-rectHeight / 2, rectWidth + aumetarImagem ,rectHeight);
         ctx.restore(); 
     };
   }
-
-   ctx.restore(); 
+  ctx.restore(); 
+  mudarAngulo(angle);
+// if (angle.toFixed(1) == anguloCentral.toFixed(1)  &&  !esperandoTroca  && estado == 0 ) {
+//     estado = 0;
+//     esperandoTroca = true;
+//     setTimeout(() => {
+//     esperandoTroca = false;
+//     estado = estado_proximo;
+//     console.log(estado)
+//     estado  = 1; 
+//     }, 4000);
+      
+// }
  
+//   if (angle.toFixed(2) == maxAngle.toFixed(2)  &&  !esperandoTroca) {
+//     esperandoTroca = true;
+//     console.log("caiu");
+//     setTimeout(() => {
+//         estado  = 2;
+//         esperandoTroca = false;
+//       }, 4000);
+//   }
+  
+//   if (angle.toFixed(2) == minAngle.toFixed(2)  &&  !esperandoTroca) {
+//     esperandoTroca = true;
+//     setTimeout(() => {
+//         estado = 1;
+//         esperandoTroca = false;
+//       }, 4000);
+//   }
 
-if (angle.toFixed(1) == anguloCentral.toFixed(1)  &&  !esperandoTroca  && estado == 0 ) {
+//   if (estado == 1  &&  angle <= maxAngle ) {
+//     angle += 0.005;
+
+//   }
+
+//   if(estado == 2 && angle >= minAngle  ){
+//     angle -= 0.005;
+
+//   }
+
+}
+
+
+export function mudarAngulo() {
+  if (angle.toFixed(1) == anguloCentral.toFixed(1)  &&  !esperandoTroca  && estado == 0 ) {
     estado = 0;
     esperandoTroca = true;
     setTimeout(() => {
@@ -84,11 +119,6 @@ if (angle.toFixed(1) == anguloCentral.toFixed(1)  &&  !esperandoTroca  && estado
       }, 4000);
   }
 
-  if (estado == 0  ) {
-    angle += 0;
-
-  }
-
   if (estado == 1  &&  angle <= maxAngle ) {
     angle += 0.005;
 
@@ -98,6 +128,8 @@ if (angle.toFixed(1) == anguloCentral.toFixed(1)  &&  !esperandoTroca  && estado
     angle -= 0.005;
 
   }
+
+
 
 }
 

@@ -14,13 +14,12 @@ let movendoBoss = false;
 let cairaparafora = 0;
 let vidas = 3;
 let tempoInicioDoJogo;
-// let tempoInicioDoJogo = Date.now(); 
 let delayInicialAtaque = 3000; 
 let tempoInicioAtaque = 0;
 let ultimoDano = 0;
 let tempoUltimoAcertoCabeca = 0;
 let cairAtaque = 0;
-
+const tempoInvulnerabilidade = 1000;
 
 
 
@@ -93,7 +92,6 @@ export function moverBoss() {
 export function desenharBoss(angulo , mario) {
     let deslocamentoY  = 365;
     ctx.fillStyle = "blue";
-    // moveBossy(angulo);
     moverYangulo(boss,angulo, deslocamentoY) ;  
     enpurraBoss(mario);
     boss.y += cairaparafora;
@@ -142,16 +140,12 @@ export function desenharAtaqueBoss(angulo , mario ) {
         return;
     }
     ataque.x += direcaoAtaque; 
-    // ataque.y += cairAtaque;
-    // moveAtaqueY(angulo); 
-
     moverYangulo(ataque,angulo, deslocamentoY)      
     vericaColisaoAtaque(mario);
     ctx.fillStyle = "white";
     const imgAtaque = new Image();
     let urlImage =  'Images/imgAtaque.png' 
     imgAtaque.src =  urlImage;
-    //ctx.fillRect(ataque.x, ataque.y, ataque.width, ataque.height);
     ctx.drawImage(imgAtaque , ataque.x, ataque.y +=  cairAtaque, ataque.width, ataque.height);
 }
 
@@ -193,9 +187,6 @@ function empurraBossSuavemente(distancia) {
 }
 
 
-
-
-// let tempoUltimoAcertoCabeca = 0;
 function enpurraBoss(mario) {
     const colisaoHorizontal = 
         boss.x + boss.width > mario.x && 
@@ -227,33 +218,6 @@ function enpurraBoss(mario) {
     }
 }
 
-
-// function enpurraBoss(mario) {
-//     const colisaoHorizontal = 
-//         boss.x + boss.width > mario.x && 
-//         boss.x < mario.x + mario.width;
-
-//     const colisaoVertical = 
-//         boss.y + boss.height > mario.y && 
-//         boss.y < mario.y + mario.height;
-
-//     if (colisaoHorizontal && colisaoVertical) {
-//         const alturaCabeca = boss.height * 0.25;
-//         const cabecaBossY = boss.y;
-
-//         if (mario.y + mario.height >= cabecaBossY && 
-//             mario.y + mario.height <= cabecaBossY + alturaCabeca  &&  mario.pular == false) {
-//             const direcao = mario.x < boss.x ? 1 : -1;
-//             empurraBossSuavemente(15 * direcao);
-//         }
-
-//         else{
-//             perderVida();
-//         }
-//     }
-// }
-
-
 export function vericaColisaoAtaque(mario) {
     const colisaoHorizontal = 
         ataque.x + ataque.width > mario.x && 
@@ -270,23 +234,6 @@ export function vericaColisaoAtaque(mario) {
     return colidiu;
 }
 
-// function moveBossy(angulo){
-//     let alturaPlataforma = 100;
-//     const cx = canvas.width / 2;
-//     const cy = alturaPlataforma;
-//     const dx = boss.x + boss.width / 2 - cx;
-//     const dy = dx * Math.tan(angulo);
-//     boss.y = cy + dy - boss.height  +  365;
-// }
-
-// function moveAtaqueY(angulo){
-//     let alturaPlataforma = 100;
-//     const cx = canvas.width / 2;
-//     const cy = alturaPlataforma;
-//     const dx = ataque.x + ataque.width / 2 - cx;
-//     const dy = dx * Math.tan(angulo);
-//     ataque.y = cy + dy - ataque.height  +  350;
-// }
 
 
 function moverYangulo(objeto,angulo , deslocamento){
@@ -300,17 +247,6 @@ function moverYangulo(objeto,angulo , deslocamento){
 }
 
 export function fazBossCair(angulo) {
-//   if (angulo < -0.13) {
-//     limiteDireta = 533;
-//   }
-//   else if (angulo > 0.13) {
-//     limiteDireta = 551;
-//      limiteEsquerda = 92;
-//   }
-//   else{
-//     limiteDireta = 551;
-//     limiteEsquerda = 92;
-//   }
 
   gerarLimites(angulo);   
   if (boss.x > limiteDireta) {
@@ -322,10 +258,6 @@ export function fazBossCair(angulo) {
     boss.caiu = true;
   }
 }
-
-
-
-
 
 export function fazAtaqueCair(angulo){
   gerarLimites(angulo);   
@@ -376,24 +308,18 @@ export function desenhaVidaMario() {
 }
 
 
-
 export function pegarVidas(){
   return vidas;
 }
 
-
-const tempoInvulnerabilidade = 1000;
 export function perderVida() {
   const agora = Date.now();
-  
   if (agora - ultimoDano < tempoInvulnerabilidade) {
     return; 
   }
-
   vidas -= 1;
   ultimoDano = agora;
 }
-
 
 export function verificaBossMatouMario(){
     if(vidas <= 0){
@@ -403,7 +329,6 @@ export function verificaBossMatouMario(){
     return false;
 
 }
-
 
 export function verificaBossLava(tempo, nome){
   let yLava =  canvas.width-50;
@@ -415,7 +340,6 @@ export function verificaBossLava(tempo, nome){
   }
   return false;
 }
-
 
 function inserirJogador(nome, vidas, tempo) {
     fetch('http://192.168.208.46:5050/dados', {
